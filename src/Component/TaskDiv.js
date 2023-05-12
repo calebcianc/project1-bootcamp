@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import NewTask from "./NewTask";
 import ShowHideButton from "./ShowHideButton";
 import TaskTables from "./TaskTables";
+import Button from "react-bootstrap/Button";
+import InfoPopUp from "./InfoPopUp";
 
 export default function TaskDiv() {
   const [tasks, setTasks] = useState([]);
@@ -20,6 +22,7 @@ export default function TaskDiv() {
     const updatedTasks = [...tasks, newTask];
     setTasks(updatedTasks);
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    console.log("after adding new task:" + localStorage.getItem("tasks"));
   };
 
   const handleShowHide = () => {
@@ -34,14 +37,20 @@ export default function TaskDiv() {
     );
   };
 
+  const clearTask = () => {
+    setTasks([]);
+    localStorage.clear();
+    console.log("after clearing task:" + localStorage.getItem("tasks"));
+  };
+
   return (
     <div className="p-1">
-      <div className="p-1 flex justify-end">
-        <ShowHideButton
-          showHide={showHide}
-          handleShowHide={handleShowHide}
-          style={{ float: "right" }}
-        />
+      <div className="p-1 task-Button-container">
+        <InfoPopUp />
+        <Button className="btn btn-warning" onClick={clearTask}>
+          Clear All Tasks
+        </Button>
+        <ShowHideButton showHide={showHide} handleShowHide={handleShowHide} />
       </div>
       <div className="p-1">
         {tasks.length > 0 && (
